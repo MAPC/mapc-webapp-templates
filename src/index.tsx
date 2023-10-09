@@ -1,15 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { munis } from "./constants/muni";
+import Map from "./Map";
+import reportWebVitals from "./reportWebVitals";
+import munidata from "./data/ma-munis.json";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+interface MapObject {
+  [key: string]: any;
+}
+
+const colors = {
+  backgroundColor: "#FCF8ED",
+  primaryColor: "#FFB624",
+  secondaryColor: "#DB9E00",
+  tertiaryColor: "#3D2A08",
+};
+
+const greenTheme = {
+  backgroundColor: "#ECFFFA",
+  primaryColor: "#00F099",
+  secondaryColor: "#00BF64",
+  tertiaryColor: "#006E47",
+};
+const data: MapObject = munidata;
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <Map data={data["features"]} munis={munis} theme={colors} />
+    </div>
   </React.StrictMode>
 );
 
