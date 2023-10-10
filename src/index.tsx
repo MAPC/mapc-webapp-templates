@@ -2,15 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { munis } from "./constants/muni";
-import Map from "./Map";
 import reportWebVitals from "./reportWebVitals";
 import munidata from "./data/ma-munis.json";
+
+// templates
+import Map from "./templates/d3-map/Map";
+import ImageViewer from "./templates/image-viewer/Image-viewer";
+
+import cat from "./templates/image-viewer/main-coon.jpg";
 
 interface MapObject {
   [key: string]: any;
 }
 
-const colors = {
+const sunTheme = {
   backgroundColor: "#FCF8ED",
   primaryColor: "#FFB624",
   secondaryColor: "#DB9E00",
@@ -29,7 +34,8 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <div style={{ width: "100vw", height: "100vh" }}>
-      <Map data={data["features"]} munis={munis} theme={colors} />
+      {/* <Map data={data["features"]} munis={munis} theme={colors} /> */}
+      <ImageViewer image={cat} title={"MAPC CAT"} alt={"photo of cat"} theme={sunTheme} />
     </div>
   </React.StrictMode>
 );
