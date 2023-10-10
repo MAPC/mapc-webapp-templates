@@ -10,6 +10,7 @@ import Map from "./templates/d3-map/Map";
 import ImageViewer from "./templates/image-viewer/Image-viewer";
 
 import cat from "./templates/image-viewer/main-coon.jpg";
+import timeline from "./templates/image-viewer/timeline.png";
 
 interface MapObject {
   [key: string]: any;
@@ -30,12 +31,20 @@ const greenTheme = {
 };
 const data: MapObject = munidata;
 
+const title: React.ReactNode = (
+  <>
+    <span style={{ fontSize: "42px", fontStyle: "italic" }}>60</span>
+    <span style={{ verticalAlign: "super", fontStyle: "italic" }}>th</span> ANNIVERSARY TIMELINE
+  </>
+);
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       {/* <Map data={data["features"]} munis={munis} theme={colors} /> */}
-      <ImageViewer image={cat} title={"MAPC CAT"} alt={"photo of cat"} theme={sunTheme} />
+      {/* <ImageViewer image={cat} title={"MAPC CAT"} alt={"photo of cat"} theme={sunTheme} /> */}
+      <ImageViewer image={timeline} title={title} alt={"MAPC 60th timeline"} theme={greenTheme} />
     </div>
   </React.StrictMode>
 );

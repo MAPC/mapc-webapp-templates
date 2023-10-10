@@ -46,9 +46,9 @@ const MainImage = styled.img`
   height: calc(100vh - 3.25rem - 8rem);
   object-fit: "contain";
 
-  /* display: block; */
+  /* display: block;
   width: auto;
-  height: auto;
+  height: auto; */
 
   overflow-x: hidden;
   overflow-y: hidden;
