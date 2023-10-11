@@ -25,7 +25,7 @@ const Title = styled.div`
   font-size: 20px;
   position: absolute;
   padding-left: 1rem;
-  fontsize: 42px;
+  font-size: 40px;
 `;
 
 const NavButton = styled.div`

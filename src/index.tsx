@@ -29,6 +29,14 @@ const greenTheme = {
   secondaryColor: "#00BF64",
   tertiaryColor: "#006E47",
 };
+
+const skyTheme = {
+  backgroundColor: "#F2F5FF",
+  primaryColor: "#8ACCFF",
+  secondaryColor: "#0063E6",
+  tertiaryColor: "#00256E",
+};
+
 const data: MapObject = munidata;
 
 const title: React.ReactNode = (
@@ -43,8 +51,8 @@ root.render(
   <React.StrictMode>
     <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       {/* <Map data={data["features"]} munis={munis} theme={colors} /> */}
-      {/* <ImageViewer image={cat} title={"MAPC CAT"} alt={"photo of cat"} theme={sunTheme} /> */}
-      <ImageViewer image={timeline} title={title} alt={"MAPC 60th timeline"} theme={greenTheme} />
+      <ImageViewer image={cat} title={"MAPC CAT"} alt={"photo of cat"} theme={sunTheme} />
+      {/* <ImageViewer image={timeline} title={title} alt={"MAPC 60th timeline"} theme={greenTheme} /> */}
     </div>
   </React.StrictMode>
 );
