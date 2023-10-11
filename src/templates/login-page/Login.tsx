@@ -1,33 +1,18 @@
-"use client";
-
-import { useState, useContext, useCallback } from "react";
-import { GetStaticProps } from "next";
+import React, { useState } from "react";
 import { styled } from "styled-components";
-import Link from "next/link";
-import NavBar from "../components/Nav";
-import Footer from "../components/Footer";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import Particles from "react-tsparticles";
-import type { Container, Engine } from "tsparticles-engine";
-import { loadFull } from "tsparticles";
-
-import useUser from "../lib/useUsers";
-import { stateContext } from "./_app";
-import fetchJson, { FetchError } from "../lib/fetchJson";
-
-import { UserData } from "../types/auth";
-
-const ParticlesHero = styled(Particles)`
+const HeroBackground = styled.div`
   width: 100vw;
-  height: calc(100vh - 2.75rem);
-  margin-top: -0.5rem;
+  height: 100%;
+  background-color: ${(props) =>
+    props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "rgb(33, 154, 241)"};
 `;
 
 const HeroDiv = styled.div`
   width: 100vw;
-  /* height: 49rem; */
+  height: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -36,7 +21,6 @@ const LoginContainer = styled.div`
   position: absolute;
   width: 100vw;
   height: calc(100vh - 2.75rem);
-  /* background-color: red; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,8 +36,8 @@ const LoginFormDiv = styled.div`
 
   border-radius: 12.5px;
   padding: 2rem 2rem 3rem;
-  background-color: #fbfffe;
-  color: #635c7b;
+  background-color: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#fbfffe")};
+  color: ${(props) => (props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "#635c7b")};
   box-shadow: 0px 0px 10px 3px #2b3b5e;
 
   justify-content: center;
@@ -63,101 +47,66 @@ const LoginFormDiv = styled.div`
 
 const LoginFormAnchor = styled.div`
   text-decoration: none;
-  color: #635c7b;
+  color: ${(props) => (props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "#635c7b")};
   text-align: center;
 `;
 
-const LoginLink = styled(Link)`
+const LoginLink = styled.a`
   text-decoration: none;
 `;
 
-export default function Login() {
-  const { loginStatus, setLoginStatus, userSettings, setUserSettings } = useContext(stateContext);
+interface theme {
+  backgroundColor: string;
+  primaryColor: string;
+  secondaryColor: string;
+  tertiaryColor: string;
+}
+
+interface props {
+  loggedIn: boolean;
+  theme?: theme;
+}
+
+export default function Login({ loggedIn, theme }: props) {
   const [email, setEmail] = useState<String | null>(null);
   const [password, setPassword] = useState<String | null>(null);
 
-  const { mutateUser } = useUser({
-    // redirectTo: "/profile-sg",
-    redirectTo: "/",
-    redirectIfFound: true,
-  });
+  //   redirect user if logged in
 
-  const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
-  }, []);
-
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // function for submitting form to login API
     e.preventDefault();
-    const user: UserData | undefined = await mutateUser(
-      await fetchJson("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      }),
-      false
-    );
 
-    if (user !== undefined && user.ok === true) {
-      setLoginStatus(true);
-      setUserSettings(user.userSession);
+    //   need to fill in user object returned type
+    interface responseObject {
+      ok: boolean;
+      [key: string]: any;
     }
+
+    const response: Promise<responseObject> | void | undefined = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((res) => {
+        if (res !== undefined && res.ok) {
+          // set login status, session data, user settings
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
     <HeroDiv>
-      <NavBar />
-      <ParticlesHero
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          fullScreen: { enable: false },
-          fpsLimit: 60,
-          particles: {
-            color: {
-              value: "#ffffff",
-            },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 1,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 4 },
-            },
-          },
-        }}
-      />
-      <LoginContainer>
+      <HeroBackground theme={theme} />
+      <LoginContainer theme={theme}>
         <LoginFormDiv>
           <Form onSubmit={handleSubmit} style={{ width: "80%" }}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>
-                <strong>Email address</strong>
+                <strong style={{ color: theme !== undefined ? theme?.tertiaryColor : "black" }}>Email address</strong>
               </Form.Label>
               <Form.Control
                 type="email"
@@ -166,12 +115,11 @@ export default function Login() {
                   setEmail(e.target.value);
                 }}
               />
-              <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>
-                <strong>Password</strong>
+                <strong style={{ color: theme !== undefined ? theme?.tertiaryColor : "black" }}>Password</strong>
               </Form.Label>
               <Form.Control
                 type="password"
@@ -181,12 +129,32 @@ export default function Login() {
                 }}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="mb-2" style={{ width: "100%", background: "#219af1" }}>
-              Log in
+            <Button
+              variant="primary"
+              type="submit"
+              className="mb-2"
+              style={{
+                width: "100%",
+                background: theme !== undefined ? theme?.primaryColor : "#219af1",
+                borderColor: theme !== undefined ? theme?.primaryColor : "#219af1",
+              }}
+            >
+              <LoginFormAnchor style={{ color: theme !== undefined ? theme?.tertiaryColor : "#fbfffe" }}>
+                Log in
+              </LoginFormAnchor>
             </Button>
             <LoginLink href="/registration">
-              <Button className="mb-2" style={{ width: "100%", background: "#68a4dd", borderColor: "#68a4dd" }}>
-                <LoginFormAnchor style={{ color: "#fbfffe" }}>Register</LoginFormAnchor>
+              <Button
+                className="mb-2"
+                style={{
+                  width: "100%",
+                  background: theme !== undefined ? theme?.secondaryColor : "#68a4dd",
+                  borderColor: theme !== undefined ? theme?.secondaryColor : "#68a4dd",
+                }}
+              >
+                <LoginFormAnchor style={{ color: theme !== undefined ? theme?.tertiaryColor : "#fbfffe" }}>
+                  Register
+                </LoginFormAnchor>
               </Button>
             </LoginLink>
             <LoginLink href="/login">

@@ -90,7 +90,6 @@ function ImageViewer({ image, title, alt, file, theme }: props) {
 
   let loadedImg = new Image();
   loadedImg.src = image;
-  console.log((loadedImg.width / loadedImg.height) * (window.innerHeight - convertRemToPixels(11.25)));
 
   useEffect(() => {
     window.addEventListener("resize", updateDimensions);
