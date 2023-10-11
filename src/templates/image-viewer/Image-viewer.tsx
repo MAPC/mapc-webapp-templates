@@ -20,7 +20,7 @@ const Nav = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${(props) => (props.theme.primaryColor !== undefined ? props.theme.primaryColor : "#00332d")};
+  color: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#00332d")};
   font-weight: bold;
   font-size: 20px;
   position: absolute;
@@ -32,12 +32,13 @@ const NavButton = styled.div`
   float: right;
   padding: 0.75rem;
   margin-right: 0.25rem;
-  background-color: ${(props) => (props.theme.primaryColor !== undefined ? props.theme.primaryColor : "#efefe7")};
+  background-color: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#efefe7")};
   font-size: large;
   cursor: pointer;
+  border-radius: 3px;
 
   &:hover {
-    background-color: ${(props) => (props.theme.secondaryColor !== undefined ? props.theme.secondaryColor : "#dddcd1")};
+    background-color: ${(props) => (props.theme.primaryColor !== undefined ? props.theme.primaryColor : "#dddcd1")};
   }
 `;
 
@@ -46,9 +47,8 @@ const MainImage = styled.img`
   height: calc(100vh - 3.25rem - 8rem);
   object-fit: "contain";
 
-  /* display: block;
-  width: auto;
-  height: auto; */
+  width: 100%;
+  align-self: center;
 
   overflow-x: hidden;
   overflow-y: hidden;
@@ -56,8 +56,9 @@ const MainImage = styled.img`
 
 const ImageDiv = styled.div`
   width: 100vw;
-  backgroundcolor: theme?.backgroundColor;
-  overflow: "hidden";
+  backgroundcolor: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#efefe7")};
+  overflow: hidden;
+  height: auto;
 `;
 
 interface theme {
@@ -76,17 +77,25 @@ interface props {
 }
 
 function ImageViewer({ image, title, alt, file, theme }: props) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth / 2);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const updateDimensions = () => {
-    setWindowWidth(window.innerWidth / 2);
+    setWindowWidth(window.innerWidth);
   };
+
+  const transformComponentRef = useRef(null);
+
+  function convertRemToPixels(rem: number) {
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  let loadedImg = new Image();
+  loadedImg.src = image;
+  console.log((loadedImg.width / loadedImg.height) * (window.innerHeight - convertRemToPixels(11.25)));
+
   useEffect(() => {
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
-
-  const transformComponentRef = useRef(null);
-  console.log(windowWidth);
 
   const Controls = ({ zoomIn, zoomOut, resetTransform }: ReactZoomPanPinchHandlers) => (
     <Nav theme={theme}>
@@ -112,13 +121,17 @@ function ImageViewer({ image, title, alt, file, theme }: props) {
     <div
       style={{
         width: "100vw",
-        // height: "calc(100vh - 3.25rem - 1rem)",
         backgroundColor: theme?.backgroundColor,
-        // overflow: "hidden",
       }}
     >
       <ImageDiv>
-        <TransformWrapper initialScale={1} initialPositionX={windowWidth / 2} ref={transformComponentRef}>
+        <TransformWrapper
+          initialPositionX={
+            windowWidth / 2 -
+            ((loadedImg.width / loadedImg.height) * (window.innerHeight - convertRemToPixels(11.25))) / 2
+          }
+          ref={transformComponentRef}
+        >
           {(utils) => (
             <React.Fragment>
               <Controls {...utils} />
