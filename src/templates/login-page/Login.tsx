@@ -22,7 +22,7 @@ const HeroDiv = styled.div`
 const LoginContainer = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - 2.75rem);
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +34,7 @@ const LoginContainer = styled.div`
 
 const LoginFormDiv = styled.div`
   width: 30vw;
-  height: 60vh;
+  height: 75%;
   display: flex;
   flex-direction: column;
 
@@ -194,7 +194,7 @@ export default function Login({ loggedIn, theme }: props) {
               }}
             >
               <LoginFormAnchor style={{ color: theme !== undefined ? theme?.tertiaryColor : "#fbfffe" }}>
-                Log in
+                <strong>Log in</strong>
               </LoginFormAnchor>
             </Button>
             <LoginLink href="/registration">
@@ -207,7 +207,7 @@ export default function Login({ loggedIn, theme }: props) {
                 }}
               >
                 <LoginFormAnchor style={{ color: theme !== undefined ? theme?.tertiaryColor : "#fbfffe" }}>
-                  Register
+                  <strong>Register</strong>
                 </LoginFormAnchor>
               </Button>
             </LoginLink>

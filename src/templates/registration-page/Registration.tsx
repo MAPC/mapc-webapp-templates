@@ -30,8 +30,8 @@ const HeroDiv = styled.div`
 const LoginContainer = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - 2.75rem);
-  /* background-color: red; */
+  height: 100%;
+  background-color: ${(props) => (props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "#fbfffe")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,13 +41,13 @@ const LoginContainer = styled.div`
 
 const LoginFormDiv = styled.div`
   width: 30vw;
-  height: 87.5vh;
+  height: 85%;
   display: flex;
   flex-direction: column;
 
   border-radius: 12.5px;
   padding: 2rem 2rem 3rem;
-  background-color: #fbfffe;
+  background-color: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#fbfffe")};
   color: #635c7b;
   box-shadow: 0px 0px 10px 3px #2b3b5e;
 
@@ -56,7 +56,19 @@ const LoginFormDiv = styled.div`
   pointer-events: auto;
 `;
 
-export default function Registration() {
+interface theme {
+  backgroundColor: string;
+  primaryColor: string;
+  secondaryColor: string;
+  tertiaryColor: string;
+}
+
+interface props {
+  loggedIn: boolean;
+  theme?: theme;
+}
+
+export default function Registration({ loggedIn, theme }: props) {
   const [email, setEmail] = useState<String | null>(null);
   const [password, setPassword] = useState<String | null>(null);
   const [passwordConfirmation, setPasswordConfirmation] = useState<String | null>(null);
@@ -153,17 +165,17 @@ export default function Registration() {
         }}
       /> */}
       <HeroDiv />
-      <LoginContainer>
-        <LoginFormDiv>
+      <LoginContainer theme={theme}>
+        <LoginFormDiv theme={theme}>
           <Form style={{ width: "100%" }} onSubmit={handleSubmit}>
             <Form.Label className={"mb-1"} style={{ width: "100%" }}>
               <h4 className={"mb-0"} style={{ width: "100%", textAlign: "center" }}>
-                <strong>REGISTRATION</strong>
+                <strong style={{ color: theme?.tertiaryColor }}>REGISTRATION</strong>
               </h4>
             </Form.Label>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>
-                <strong>Email address</strong>
+                <strong style={{ color: theme?.tertiaryColor }}>Email address</strong>
               </Form.Label>
               <Form.Control
                 required
@@ -177,7 +189,7 @@ export default function Registration() {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>
-                <strong>Password</strong>
+                <strong style={{ color: theme?.tertiaryColor }}>Password</strong>
               </Form.Label>
               <Form.Control
                 required
@@ -190,7 +202,7 @@ export default function Registration() {
                 }}
               />
               <Form.Label>
-                <strong>Confirm Password</strong>
+                <strong style={{ color: theme?.tertiaryColor }}>Confirm Password</strong>
               </Form.Label>
               <Form.Control
                 required
@@ -202,35 +214,13 @@ export default function Registration() {
                 }}
               />
             </Form.Group>
-            <Form.Label>Additional Info</Form.Label>
-            <Form.Group>
-              <Form.Label>
-                <strong>Name</strong>
-              </Form.Label>
-              <Form.Control
-                required
-                className="mb-3"
-                type="text"
-                placeholder="name"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-              <Form.Label>
-                <strong>Municipality</strong>
-              </Form.Label>
-              <Form.Select
-                className="mb-3"
-                onChange={(e) => {
-                  //   console.log("setstate");
-                }}
-                aria-label="Default select example"
-              >
-                <option>Select an Option</option>
-              </Form.Select>
-            </Form.Group>
-            <Button variant="primary" type="submit" className="mb-2" style={{ width: "100%", background: "#219af1" }}>
-              Register
+            <Button
+              variant="primary"
+              type="submit"
+              className="mb-2"
+              style={{ width: "100%", background: theme?.primaryColor, color: theme?.tertiaryColor }}
+            >
+              <strong>Register</strong>
             </Button>
           </Form>
         </LoginFormDiv>
