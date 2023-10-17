@@ -6,6 +6,7 @@ import { FileEarmarkArrowDown, ZoomIn, ZoomOut, XLg } from "react-bootstrap-icon
 
 import styled from "styled-components";
 
+// in-js styling
 const Nav = styled.div`
   background-color: ${(props) => (props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "#efefe7")};
   color: ${(props) =>
@@ -16,24 +17,23 @@ const Nav = styled.div`
       : "#00332d"};
   height: 3.25rem;
   margin-bottom: 1rem;
-  padding: 0.5rem;
+  padding: 0.25rem;
 `;
 
 const Title = styled.div`
   color: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#00332d")};
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1.75rem;
   position: absolute;
   padding-left: 1rem;
-  font-size: 40px;
 `;
 
 const NavButton = styled.div`
   float: right;
-  padding: 0.75rem;
-  margin-right: 0.25rem;
+  padding: 0.45rem 0.65rem;
+  margin-right: 0.35rem;
   background-color: ${(props) => (props.theme.backgroundColor !== undefined ? props.theme.backgroundColor : "#efefe7")};
-  font-size: large;
+  font-size: 1.25rem;
   cursor: pointer;
   border-radius: 3px;
 
@@ -61,6 +61,7 @@ const ImageDiv = styled.div`
   height: auto;
 `;
 
+// props type styping, themes
 interface theme {
   backgroundColor: string;
   primaryColor: string;
@@ -92,11 +93,13 @@ function ImageViewer({ image, title, alt, file, theme }: props) {
   loadedImg.src = image;
 
   useEffect(() => {
+    // keep track of window size for image centering
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
   const Controls = ({ zoomIn, zoomOut, resetTransform }: ReactZoomPanPinchHandlers) => (
+    // image viewer controls, nav bar
     <Nav theme={theme}>
       <Title theme={theme}>{title}</Title>
       <NavButton theme={theme}>

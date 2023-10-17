@@ -3,6 +3,12 @@ import { styled } from "styled-components";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+// import particles library for background (if wanted)
+// import Particles from "react-tsparticles";
+// import type { Container, Engine } from "tsparticles-engine";
+// import { loadFull } from "tsparticles";
+
+// background container
 const HeroBackground = styled.div`
   width: 100vw;
   height: 100%;
@@ -19,6 +25,7 @@ const HeroDiv = styled.div`
     props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "rgb(33, 154, 241)"};
 `;
 
+// background color
 const LoginContainer = styled.div`
   position: absolute;
   width: 100vw;
@@ -32,6 +39,7 @@ const LoginContainer = styled.div`
     props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "rgb(33, 154, 241)"};
 `;
 
+// form container
 const LoginFormDiv = styled.div`
   width: 30vw;
   height: 75%;
@@ -49,6 +57,7 @@ const LoginFormDiv = styled.div`
   pointer-events: auto;
 `;
 
+// links
 const LoginFormAnchor = styled.div`
   text-decoration: none;
   color: ${(props) => (props.theme.tertiaryColor !== undefined ? props.theme.tertiaryColor : "#635c7b")};
@@ -59,6 +68,7 @@ const LoginLink = styled.a`
   text-decoration: none;
 `;
 
+// props typing, themes
 interface theme {
   backgroundColor: string;
   primaryColor: string;
@@ -75,7 +85,7 @@ export default function Login({ loggedIn, theme }: props) {
   const [email, setEmail] = useState<String | null>(null);
   const [password, setPassword] = useState<String | null>(null);
 
-  //   redirect user if logged in
+  //   redirect user if logged in & particles initiation if want particles in background
   //   const particlesInit = useCallback(async (engine) => {
   //     await loadFull(engine);
   //   }, []);

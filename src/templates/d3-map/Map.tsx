@@ -32,6 +32,7 @@ interface props {
 }
 
 function Map({ data, munis, theme }: props) {
+  // state that keeps track of the currently hovered(selected) muni
   const [selectedMuni, setSelectedMuni] = useState("N/A");
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -136,6 +137,7 @@ function Map({ data, munis, theme }: props) {
   }, [data, munis, projection]);
 
   useEffect(() => {
+    // initialize map render
     initMap();
   }, [data, initMap]);
 

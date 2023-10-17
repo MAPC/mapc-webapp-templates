@@ -28,11 +28,12 @@ export const CatImage: Story = {
 
 const title: React.ReactNode = (
   <>
-    <span style={{ fontSize: "42px", fontStyle: "italic" }}>60</span>
+    <span style={{ fontSize: "2.35rem", fontStyle: "italic" }}>60</span>
     <span style={{ verticalAlign: "super", fontStyle: "italic" }}>th</span> ANNIVERSARY TIMELINE
   </>
 );
 
+// template accepts custome titles
 export const CustomTitleTimeline: Story = {
   args: {
     image: timeline,
