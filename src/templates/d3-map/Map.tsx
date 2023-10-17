@@ -107,10 +107,15 @@ function Map({ data, munis, theme }: props) {
           )
         ) {
           setSelectedMuni(d.target.__data__.properties.town);
+          // pull hovered element to front
+          d3.select(this).raise();
+          // set hovered element fill color
           d3.select(this).attr(
             "fill",
             theme?.secondaryColor !== undefined ? theme?.secondaryColor : "rgb(255,206,134)"
           );
+          // set hovered element stroke color (border)
+          d3.select(this).attr("stroke", theme?.backgroundColor !== undefined ? theme?.backgroundColor : "#5064b7");
         }
       })
       .on("click", (d) => {
